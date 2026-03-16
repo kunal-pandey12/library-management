@@ -19,10 +19,10 @@ public class BookService {
     private AuthorRepo authorRepo;
 
     public List<BookDto> createAll(List<BookDto> bookDto){
-        List<BookEntity> Books=bookDto.stream().map(dto ->{
+        List<BookEntity> books=bookDto.stream().map(dto ->{
 
             BookEntity book=new BookEntity();
-            book.setId(dto.getAuthorId());
+            book.setAvailableCopies(dto.getAvailableCopies());
             book.setName(dto.getName());
             book.setCategory(dto.getCategory());
 
@@ -35,8 +35,16 @@ public class BookService {
 
 
         }) .toList();
+        List<BookEntity> savedBooks = bookRepo.saveAll(books);
 
-        bookRepo.saveAll(Books);
-        return bookDto;
+        return savedBooks.stream().map(bookEntity ->
+              new BookDto(
+                      bookEntity.getId(),
+                      bookEntity.getAuthor().getId(),
+                      bookEntity.getName(),
+                      bookEntity.getCategory(),
+                      bookEntity.getAvailableCopies()
+              )
+        ).toList();
     }
 }

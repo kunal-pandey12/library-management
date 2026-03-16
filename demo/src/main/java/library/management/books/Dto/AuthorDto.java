@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthorDto {
-    private Long authorId;
+    private Long Id;
     private String name;
     private String email;
-    private String number;
-    private String books;
+    private Long number;
 }

@@ -9,9 +9,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookDto {
+
+    private Long id;
     private Long authorId;
     private String name;
     private String category;
     private Long availableCopies;
-    private List<Long> authorIds;
 }
