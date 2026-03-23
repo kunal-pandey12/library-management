@@ -17,6 +17,7 @@ public class BookEntity {
     private String category;
     private Long availableCopies;
 
+
     @ManyToOne
     @JoinColumn(name = "author_id")
     private AuthorEntity author;

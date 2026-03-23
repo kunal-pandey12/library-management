@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/create")
+@RequestMapping("/Author")
 public class AuthorController {
 
     @Autowired
     private AuthorService authorService;
 
-    @PostMapping("/Author")
+    @PostMapping("/create")
     public List<AuthorDto> createAuthor( @RequestBody List<AuthorDto> authorDto){
         return authorService.createAll(authorDto);
     }

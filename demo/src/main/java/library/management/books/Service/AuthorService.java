@@ -70,7 +70,7 @@ public class AuthorService {
         AuthorEntity authorEntity = authorRepo.findById(id)
                 .orElseThrow(()-> new RuntimeException("Author not found id"));
 
-        authorEntity.setId(authorDto.getId());
+
         authorEntity.setEmail(authorDto.getEmail());
         authorEntity.setName(authorDto.getName());
         authorEntity.setNumber(authorDto.getNumber());
@@ -92,6 +92,3 @@ public class AuthorService {
         authorRepo.delete(authorEntity);
     }
     }
-
-
-
