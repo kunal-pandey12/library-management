@@ -33,4 +33,15 @@ public class BookController {
         bookService.deleteBook(id);
         return "delete successfully book id";
     }
+
+    @GetMapping("/search/book")
+    public List<BookDto> searchBookByName(@RequestParam String name){
+        return bookService.searchBookByName(name);
+    }
+
+    @GetMapping("/search/author")
+    public List<BookDto> searchBookByAuthor(@RequestParam String authorName){
+
+        return bookService.searchBookByAuthor(authorName);
+    }
 }

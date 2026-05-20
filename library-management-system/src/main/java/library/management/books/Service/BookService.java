@@ -113,4 +113,52 @@ public class BookService {
                 .orElseThrow(()-> new RuntimeException("Book id not found "));
         bookRepo.delete(bookEntity);
      }
+           // Search books by book name
+    public List<BookDto> searchBookByName(String name){
+
+        List<BookEntity> books =
+                bookRepo.findByNameContainingIgnoreCase(name);
+
+        return books.stream().map(book -> {
+
+            BookDto dto = new BookDto();
+
+            dto.setId(book.getId());
+            dto.setName(book.getName());
+            dto.setCategory(book.getCategory());
+            dto.setAvailableCopies(book.getAvailableCopies());
+
+            if(book.getAuthor() != null){
+                dto.setAuthorId(book.getAuthor().getId());
+                dto.setAuthorName(book.getAuthor().getName());
+            }
+
+            return dto;
+
+        }).toList();
+    }
+                 // Search books by author name
+    public List<BookDto> searchBookByAuthor(String authorName){
+
+        List<BookEntity> books =
+                bookRepo.findByAuthor_NameContainingIgnoreCase(authorName);
+
+        return books.stream().map(book -> {
+
+            BookDto dto = new BookDto();
+
+            dto.setId(book.getId());
+            dto.setName(book.getName());
+            dto.setCategory(book.getCategory());
+            dto.setAvailableCopies(book.getAvailableCopies());
+
+            if(book.getAuthor() != null){
+                dto.setAuthorId(book.getAuthor().getId());
+                dto.setAuthorName(book.getAuthor().getName());
+            }
+
+            return dto;
+
+        }).toList();
+    }
 }
