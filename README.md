@@ -19,6 +19,7 @@ A REST API based Library Management System built with Spring Boot, MySQL, and Sp
 - 👤 User Management (CRUD)
 - 📋 Issue Book (with availability check & duplicate check)
 - 🔄 Return Book (with fine calculation ₹10/day for late return)
+- 🔍 Book Search Functionality (by Book Name & Author)
 - 🔐 Role Based Security (ADMIN / USER)
 - 🔑 Register / Signup API
 - 🔒 BCrypt Password Encryption
