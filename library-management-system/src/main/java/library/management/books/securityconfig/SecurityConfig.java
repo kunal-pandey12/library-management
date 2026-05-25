@@ -25,8 +25,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
-                        //  Auth — sabko allow
+                        //  Auth — sabko allow(Register ya singup public koi bhi kr sakta hai )
                         .requestMatchers("/auth/**").permitAll()
+
+                        // Public endpoints (No authentication required)
+                        .requestMatchers(
+                                "/css/**",
+                                "/js/**",
+                                "/login"
+                        ).permitAll()
 
                         //  Author Controller — /Author/**
                         .requestMatchers(HttpMethod.GET, "/Author/**")
@@ -70,12 +77,17 @@ public class SecurityConfig {
                         // Baaki sab authenticated
                         .anyRequest().authenticated()
                 )
+                //(httpBasic)>>“Basic username-password login system enable kar raha hai”
+               // .httpBasic(basic ->
+                 //       basic.realmName("Library Management System"));
 
-                .httpBasic(basic ->
-                        basic.realmName("Library Management System"));
-
-        return http.build();
-    }
+                //this is for fronted
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/dashboard", true)
+                        .permitAll());
+            return http.build(); //“http.build() configured security rules ka final SecurityFilterChain object return karta hai.
+    }                              // jo bhi sab upper bana hai  “Theek hai, ab jo security settings banayi hain unko apply/finalize kar do”
 
     @Bean
     public PasswordEncoder passwordEncoder() {

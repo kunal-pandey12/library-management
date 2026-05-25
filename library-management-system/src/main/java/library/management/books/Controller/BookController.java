@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("books")
+@RequestMapping("/books")
 public class BookController {
 
     @Autowired
     private BookService bookService;
 
-    @PostMapping("/crate")
+    @PostMapping("/create")
     public List<BookDto> createBooks(@RequestBody List<BookDto> bookDto){
         return bookService.createAll(bookDto);
     }
