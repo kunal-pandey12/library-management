@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Books Management</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 </head>
@@ -12,140 +14,232 @@
 
 <div class="container mt-5">
 
-    <h1 class="text-center mb-4">
-        Books Management
-    </h1>
+    <h1 class="text-center mb-4">Books Management</h1>
 
-    <!-- Search Book -->
+    <!-- ===================== USER SECTION ===================== -->
+    <!-- Sirf USER role wale dekh sakta hai -->
+    <!-- Features: Search by Book Name, Search by Author, Book List (read only) -->
+    <div sec:authorize="hasRole('USER')">
 
-    <div class="card p-4 shadow mb-4">
+        <!-- Search by Book Name — USER -->
+        <div class="card p-4 shadow mb-4 border-primary">
+            <h4 class="text-primary">User Panel</h4>
 
-        <h4>Search Book</h4>
-
-        <form action="/books/search/book" method="get">
-
-            <div class="row">
-
-                <div class="col-md-9">
-
-                    <input type="text"
-                           name="name"
-                           class="form-control"
-                           placeholder="Enter Book Name">
-
+            <h6>Search Book by Name</h6>
+            <form th:action="@{/books/search/page}" method="get" class="mb-3">
+                <div class="row">
+                    <div class="col-md-9">
+                        <input type="text" name="name" class="form-control" placeholder="Enter Book Name">
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary w-100">Search</button>
+                    </div>
                 </div>
+            </form>
 
-                <div class="col-md-3">
-
-                    <button class="btn btn-primary w-100">
-                        Search
-                    </button>
-
+            <!-- Search by Author Name — USER -->
+            <h6>Search Book by Author</h6>
+            <form th:action="@{/books/search/author/page}" method="get">
+                <div class="row">
+                    <div class="col-md-9">
+                        <input type="text" name="authorName" class="form-control" placeholder="Enter Author Name">
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-success w-100">Search</button>
+                    </div>
                 </div>
+            </form>
+        </div>
 
-            </div>
-
-        </form>
-
+        <!-- Book List — USER (No Edit/Delete, read only) -->
+        <div class="card shadow p-4 mb-4">
+            <h4 class="mb-3">Book List</h4>
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Copies</th>
+                    <th>Author</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.id}"></td>
+                    <td th:text="${book.name}"></td>
+                    <td th:text="${book.category}"></td>
+                    <td th:text="${book.availableCopies}"></td>
+                    <td th:text="${book.authorName}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Add Book -->
+    <!-- ===================== ADMIN SECTION ===================== -->
+    <!-- Sirf ADMIN role wale dekh sakta hai -->
+    <!-- Features: Search by Book Name, Search by Author, Add Book, Edit Book, Delete Book -->
+    <div sec:authorize="hasRole('ADMIN')">
 
-    <div class="card p-4 shadow mb-4">
+        <div class="card p-4 shadow mb-4 border-danger">
+            <h4 class="text-danger">Admin Panel</h4>
 
-        <h4>Add Book</h4>
+            <!-- Search by Book Name — ADMIN -->
+            <h6>Search Book by Name</h6>
+            <form th:action="@{/books/search/page}" method="get" class="mb-3">
+                <div class="row">
+                    <div class="col-md-9">
+                        <input type="text" name="name" class="form-control" placeholder="Enter Book Name">
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary w-100">Search</button>
+                    </div>
+                </div>
+            </form>
 
-        <form>
+            <!-- Search by Author Name — ADMIN -->
+            <h6>Search Book by Author</h6>
+            <form th:action="@{/books/search/author/page}" method="get" class="mb-3">
+                <div class="row">
+                    <div class="col-md-9">
+                        <input type="text" name="authorName" class="form-control" placeholder="Enter Author Name">
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-success w-100">Search</button>
+                    </div>
+                </div>
+            </form>
 
-            <div class="mb-3">
+            <!-- Add Book Form — Sirf ADMIN add kar sakta hai -->
+            <h6 class="mt-3">Add Book</h6>
+            <form th:action="@{/books/add}" method="post">
+                <div class="mb-3">
+                    <label>Book Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="e.g. Python Guide">
+                </div>
+                <div class="mb-3">
+                    <label>Category</label>
+                    <input type="text" name="category" class="form-control" placeholder="e.g. Programming">
+                </div>
+                <div class="mb-3">
+                    <label>Available Copies</label>
+                    <input type="number" name="availableCopies" class="form-control" placeholder="e.g. 5">
+                </div>
+                <div class="mb-3">
+                    <label>Author ID</label>
+                    <input type="number" name="authorId" class="form-control" placeholder="e.g. 1 = Chetan Bhagat">
+                </div>
+                <button class="btn btn-danger">Add Book</button>
+            </form>
+        </div>
 
-                <label>Book Name</label>
+        <!-- Book List — ADMIN (Edit aur Delete buttons hain) -->
+        <div class="card shadow p-4 mb-4">
+            <h4 class="mb-3">Book List</h4>
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Copies</th>
+                    <th>Author</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.id}"></td>
+                    <td th:text="${book.name}"></td>
+                    <td th:text="${book.category}"></td>
+                    <td th:text="${book.availableCopies}"></td>
+                    <td th:text="${book.authorName}"></td>
+                    <td>
+                        <!-- Edit Button — Modal open karega, book data prefill hoga -->
+                        <button class="btn btn-warning btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal"
+                                th:attr="data-id=${book.id},
+                                         data-name=${book.name},
+                                         data-category=${book.category},
+                                         data-copies=${book.availableCopies},
+                                         data-authorid=${book.authorId}">
+                            Edit
+                        </button>
 
-                <input type="text"
-                       class="form-control">
-
-            </div>
-
-            <div class="mb-3">
-
-                <label>Category</label>
-
-                <input type="text"
-                       class="form-control">
-
-            </div>
-
-            <div class="mb-3">
-
-                <label>Available Copies</label>
-
-                <input type="number"
-                       class="form-control">
-
-            </div>
-
-            <button class="btn btn-success">
-                Add Book
-            </button>
-
-        </form>
-
-    </div>
-
-    <!-- Table -->
-
-    <div class="card shadow p-4">
-
-        <h4 class="mb-3">
-            Book List
-        </h4>
-
-        <table class="table table-bordered">
-
-            <thead class="table-dark">
-
-            <tr>
-
-                <th>ID</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Copies</th>
-                <th>Action</th>
-
-            </tr>
-
-            </thead>
-
-            <tbody>
-
-            <tr>
-
-                <td>1</td>
-                <td>Java</td>
-                <td>Programming</td>
-                <td>5</td>
-
-                <td>
-
-                    <button class="btn btn-warning btn-sm">
-                        Edit
-                    </button>
-
-                    <button class="btn btn-danger btn-sm">
-                        Delete
-                    </button>
-
-                </td>
-
-            </tr>
-
-            </tbody>
-
-        </table>
-
+                        <!-- Delete Button — Book delete hogi, page refresh hoga -->
+                        <form th:action="@{/books/delete/{id}(id=${book.id})}" method="post" style="display:inline;">
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
+
+<!-- ===================== EDIT MODAL ===================== -->
+<!-- Edit button click karne pe ye modal open hoga -->
+<!-- Book ka purana data prefill hoga, admin change karke update karega -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="post">
+                    <input type="hidden" id="editId" name="id">
+                    <div class="mb-3">
+                        <label>Book Name</label>
+                        <input type="text" id="editName" name="name" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label>Category</label>
+                        <input type="text" id="editCategory" name="category" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label>Available Copies</label>
+                        <input type="number" id="editCopies" name="availableCopies" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label>Author ID</label>
+                        <input type="number" id="editAuthorId" name="authorId" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">Update Book</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS — Modal ke liye zaruri hai -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Edit Modal Script — Button ka data modal mein prefill karta hai -->
+<script>
+    var editModal = document.getElementById('editModal');
+    editModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-id');
+        var name = button.getAttribute('data-name');
+        var category = button.getAttribute('data-category');
+        var copies = button.getAttribute('data-copies');
+        var authorId = button.getAttribute('data-authorid');
+
+        document.getElementById('editId').value = id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editCategory').value = category;
+        document.getElementById('editCopies').value = copies;
+        document.getElementById('editAuthorId').value = authorId;
+
+        document.getElementById('editForm').action = '/books/update/' + id;
+    });
+</script>
 
 </body>
 </html>
