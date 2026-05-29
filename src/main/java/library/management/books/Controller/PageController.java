@@ -12,7 +12,6 @@ public class PageController {
 
     @Autowired
     private BookService bookService;
-
     /*
      * Thymeleaf UI ke liye Books Page endpoint
      * Sabhi books fetch karke books.html page pe bhejta hai
@@ -52,5 +51,9 @@ public class PageController {
     @GetMapping("/issue-page")
     public String issuePage() {
         return "issue-books";
+    }
+    @GetMapping("/register")
+    public String registerPage() {
+        return "register";
     }
 }
