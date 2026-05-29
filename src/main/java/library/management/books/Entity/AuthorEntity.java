@@ -16,7 +16,7 @@ public class AuthorEntity {
     private Long id;
     private String name;
     private String email;
-    private Long number;
+    private String number;
 
 
     @OneToMany(mappedBy = "author")

@@ -25,17 +25,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
-                        //  Auth — sabko allow(Register ya singup public koi bhi kr sakta hai )
+                        // Auth — sabko allow (Register/Signup public hai)
                         .requestMatchers("/auth/**").permitAll()
 
-                        // Public endpoints (No authentication required)
+                        // Public endpoints (Login page, CSS, JS)
                         .requestMatchers(
                                 "/css/**",
                                 "/js/**",
                                 "/login"
                         ).permitAll()
 
-                        //  Author Controller — /Author/**
+                        // Author REST Controller — /Author/**
+                        // REST API ke liye (AuthorController.java)
                         .requestMatchers(HttpMethod.GET, "/Author/**")
                         .authenticated()
                         .requestMatchers(HttpMethod.POST, "/Author/**")
@@ -45,7 +46,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/Author/**")
                         .hasRole("ADMIN")
 
-                        //  Book Controller — /books/**
+                        // Author View Controller — /authors/**
+                        // Thymeleaf pages ke liye (AuthorViewController.java)
+                        .requestMatchers(HttpMethod.GET, "/authors/**")
+                        .authenticated()
+                        .requestMatchers(HttpMethod.POST, "/authors/**")
+                        .hasRole("ADMIN")
+
+                        // Book Controller — /books/**
                         .requestMatchers(HttpMethod.GET, "/books/**")
                         .authenticated()
                         .requestMatchers(HttpMethod.POST, "/books/**")
@@ -55,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/books/**")
                         .hasRole("ADMIN")
 
-                        //  Issue Controller — /issue/**
+                        // Issue Controller — /issue/**
                         .requestMatchers(HttpMethod.GET, "/issue/**")
                         .authenticated()
                         .requestMatchers(HttpMethod.POST, "/issue/**")
@@ -63,7 +71,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/issue/**")
                         .authenticated()
 
-                        //  User Controller — /User/**
+                        // User Controller — /User/**
                         // Sirf ADMIN dekh sakta hai users
                         .requestMatchers(HttpMethod.GET, "/User/**")
                         .hasRole("ADMIN")
@@ -77,17 +85,14 @@ public class SecurityConfig {
                         // Baaki sab authenticated
                         .anyRequest().authenticated()
                 )
-                //(httpBasic)>>“Basic username-password login system enable kar raha hai”
-               // .httpBasic(basic ->
-                 //       basic.realmName("Library Management System"));
-
-                //this is for fronted
+                // Frontend ke liye form login
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/dashboard", true)
                         .permitAll());
-            return http.build(); //“http.build() configured security rules ka final SecurityFilterChain object return karta hai.
-    }                              // jo bhi sab upper bana hai  “Theek hai, ab jo security settings banayi hain unko apply/finalize kar do”
+
+        return http.build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

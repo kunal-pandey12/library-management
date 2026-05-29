@@ -12,5 +12,5 @@ public class AuthorDto {
     private Long id;
     private String name;
     private String email;
-    private Long number;
+    private String number;
 }
