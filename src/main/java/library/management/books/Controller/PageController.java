@@ -13,6 +13,15 @@ public class PageController {
     @Autowired
     private BookService bookService;
 
+    /*
+     * Thymeleaf UI ke liye Books Page endpoint
+     * Sabhi books fetch karke books.html page pe bhejta hai
+     *
+     * Flow:
+     * 1. User ya Admin /books-page pe jaata hai
+     * 2. Database se sabhi books fetch hoti hain
+     * 3. books.html page render hota hai book list ke saath
+     */
     @GetMapping("/books-page")
     public String booksPage(Model model){
         List<BookDto> books = bookService.getAllBook();
