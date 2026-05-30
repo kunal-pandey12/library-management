@@ -3,7 +3,6 @@ package library.management.books.Controller;
 import library.management.books.Dto.UserDto;
 import library.management.books.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

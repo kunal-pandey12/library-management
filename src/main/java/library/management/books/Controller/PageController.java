@@ -1,5 +1,6 @@
 package library.management.books.Controller;
 import library.management.books.Dto.BookDto;
+import library.management.books.Repo.UserRepo;
 import library.management.books.Service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,9 @@ public class PageController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private UserRepo userRepo;
     /*
      * Thymeleaf UI ke liye Books Page endpoint
      * Sabhi books fetch karke books.html page pe bhejta hai
@@ -43,11 +47,6 @@ public class PageController {
         return "authors";
     }
 
-    @GetMapping("/users-page")
-    public String usersPage() {
-        return "users";
-    }
-
     @GetMapping("/issue-page")
     public String issuePage() {
         return "issue-books";
@@ -55,5 +54,10 @@ public class PageController {
     @GetMapping("/register")
     public String registerPage() {
         return "register";
+    }
+    @GetMapping("/users-page")
+    public String usersPage(Model model) {
+        model.addAttribute("users", userRepo.findAll());
+        return "users";
     }
 }

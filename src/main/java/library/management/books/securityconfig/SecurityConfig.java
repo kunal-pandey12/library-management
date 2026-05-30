@@ -48,6 +48,8 @@ public class SecurityConfig {
 
                         // Author View Controller — /authors/**
                         // Thymeleaf pages ke liye (AuthorViewController.java)
+                        .requestMatchers(HttpMethod.GET, "/authors/search")
+                        .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/authors/**")
                         .authenticated()
                         .requestMatchers(HttpMethod.POST, "/authors/**")
@@ -81,6 +83,14 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/User/**")
                         .hasRole("ADMIN")
+
+
+                        // User View Controller — /users/**
+                        // Thymeleaf pages ke liye (UserViewController.java)
+                        .requestMatchers(HttpMethod.GET, "/users/search").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN")
+
 
                         // Baaki sab authenticated
                         .anyRequest().authenticated()
