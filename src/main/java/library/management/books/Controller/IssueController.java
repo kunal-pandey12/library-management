@@ -3,6 +3,7 @@ import library.management.books.Dto.IssueRequestDto;
 import library.management.books.Dto.IssueResponseDto;
 import library.management.books.Service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,5 +28,10 @@ public class IssueController {
     @PutMapping("/return/{issueId}")
     public String returnBook(@PathVariable Long issueId){
         return issueService.returnBook(issueId);
+    }
+    @GetMapping("/issue-page")
+    public String issuePage(Model model) {
+        model.addAttribute("issues", issueService.getAllIssues());
+        return "issue-books";
     }
 }

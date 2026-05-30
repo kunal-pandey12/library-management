@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Issue Books</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 </head>
@@ -12,41 +12,69 @@
 
 <div class="container mt-5">
 
-    <h1 class="text-center mb-4">
-        Issue Books
-    </h1>
+    <h1 class="text-center mb-4">Issue Books</h1>
 
-    <div class="card shadow p-4 mb-4">
+    <!-- Error message — Book already issued ya available nahi hai to dikhega -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-        <form>
+    <!-- Fine message — Return ke baad dikhega — Late return pe ₹10/day fine -->
+    <div th:if="${fine}" class="alert alert-warning" th:text="${fine}"></div>
 
+    <!-- ===================== ISSUE BOOK FORM ===================== -->
+    <!-- User ID aur Book ID deke book issue karo -->
+    <!-- User aur Admin dono issue kar sakte hain -->
+    <div class="card shadow p-4 mb-4 border-primary">
+        <h4 class="text-primary">Issue Book</h4>
+        <form th:action="@{/issue-view/issue}" method="post">
             <div class="mb-3">
-
                 <label>User ID</label>
-
-                <input type="number"
-                       class="form-control">
-
+                <input type="number" name="userId" class="form-control" placeholder="e.g. 1">
             </div>
-
             <div class="mb-3">
-
                 <label>Book ID</label>
-
-                <input type="number"
-                       class="form-control">
-
+                <input type="number" name="bookId" class="form-control" placeholder="e.g. 1">
             </div>
-
-            <button class="btn btn-primary">
-                Issue Book
-            </button>
-
+            <button class="btn btn-primary">Issue Book</button>
         </form>
+    </div>
 
+    <!-- ===================== ISSUED BOOKS LIST ===================== -->
+    <!-- Sabhi issued books ki list — ID, User, Book, Issue Date, Due Date, Return -->
+    <div class="card shadow p-4 mb-4">
+        <h4 class="mb-3">Issued Books List</h4>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>User Name</th>
+                <th>Book Name</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="issue : ${issues}">
+                <td th:text="${issue.id}"></td>
+                <td th:text="${issue.userName}"></td>
+                <td th:text="${issue.bookName}"></td>
+                <td th:text="${issue.issueDate}"></td>
+                <td th:text="${issue.dueDate}"></td>
+                <td>
+                    <!-- Return Button — Book return karo -->
+                    <form th:action="@{/issue-view/return/{id}(id=${issue.id})}" method="post"
+                          style="display:inline;">
+                        <button class="btn btn-success btn-sm">Return</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

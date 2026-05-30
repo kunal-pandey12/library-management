@@ -12,7 +12,7 @@ public class IssueResponseDto {
     private String userName;
     private String bookName;
     private LocalDate issueDate;
-    private LocalDate DueDate;
+    private LocalDate dueDate;
 }
 
 

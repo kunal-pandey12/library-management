@@ -10,6 +10,7 @@ import library.management.books.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -80,10 +81,15 @@ public class IssueService {
         String message = "Book returned successfully";
 
         // Fine logic
+// ChronoUnit.DAYS.between() se actual days calculate hote hain
+// getDayOfMonth() galat tha — month cross hone pe wrong result deta tha
+// e.g. Due: April 24, Return: May 31 = 37 days late (sahi)
         if (issue.getReturnDate().isAfter(issue.getDueDate())) {
-            int daysLate = issue.getReturnDate().getDayOfMonth()
-                    - issue.getDueDate().getDayOfMonth();
-            int fine = daysLate * 10;
+            long daysLate = ChronoUnit.DAYS.between(
+                    issue.getDueDate(),
+                    issue.getReturnDate()
+            );
+            int fine = (int) daysLate * 10;
             message = "Book returned late. Fine: ₹" + fine;
         }
 
@@ -105,6 +111,7 @@ public class IssueService {
             dto.setUserName(issue.getUser().getName());
             dto.setBookName(issue.getBook().getName());
             dto.setIssueDate(issue.getIssueDate());
+            dto.setDueDate(issue.getDueDate());
             return dto;
         }).toList();
     }
