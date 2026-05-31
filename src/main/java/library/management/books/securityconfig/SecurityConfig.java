@@ -55,6 +55,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/authors/**")
                         .hasRole("ADMIN")
 
+                        // Book search by author — sirf ADMIN
+                        .requestMatchers(HttpMethod.GET, "/books/search/author/page").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/books/search/page").hasRole("ADMIN")
+
                         // Book Controller — /books/**
                         .requestMatchers(HttpMethod.GET, "/books/**")
                         .authenticated()
