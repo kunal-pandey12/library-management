@@ -16,13 +16,10 @@ public class BookViewController {
     private BookService bookService;
 
     /*
-     * This API is used for Thymeleaf UI search (frontend page rendering).
-     * It searches books by name and returns the "books.html" page
-     * with filtered book data added in the Model.
-     *
-     * NOTE:
-     * - Used only for UI (not for JSON/API response)
-     * - Works with Thymeleaf template (books.html)
+     * GET /books/search/page
+     * User aur Admin dono kar sakte hain
+     * Book name se search karta hai
+     * Result books.html pe bhejta hai
      */
     @GetMapping("/search/page")
     public String searchBookPage(@RequestParam String name, Model model) {
@@ -32,23 +29,10 @@ public class BookViewController {
     }
 
     /*
-     * This API is used for Thymeleaf UI (frontend page rendering) to search books by author name.
-     *
-     * FEATURE ADDED IN books.html:
-     * - Author Search functionality (input field for author name)
-     * - Displays filtered book list in the same books table
-     * - Updates UI dynamically using Model (books attribute)
-     *
-     * FLOW:
-     * 1. User enters author name in search field
-     * 2. Request goes to /books/search/author/page
-     * 3. Service layer filters books by author
-     * 4. Filtered list is sent to "books.html"
-     * 5. Table updates with matching results
-     *
-     * NOTE:
-     * - This is for UI only (Thymeleaf view)
-     * - Not a REST API (no JSON response)
+     * GET /books/search/author/page
+     * User aur Admin dono kar sakte hain
+     * Author name se book search karta hai
+     * Result books.html pe bhejta hai
      */
     @GetMapping("/search/author/page")
     public String searchByAuthorPage(@RequestParam String authorName, Model model) {
@@ -58,14 +42,36 @@ public class BookViewController {
     }
 
     /*
-     * Thymeleaf UI ke liye Add Book endpoint
+     * GET /books/search/admin/page
+     * Sirf ADMIN kar sakta hai
+     * Admin Panel — Book name se search karta hai
+     * Result books.html pe bhejta hai
+     */
+    @GetMapping("/search/admin/page")
+    public String searchBookAdminPage(@RequestParam String name, Model model) {
+        List<BookDto> books = bookService.searchBookByName(name);
+        model.addAttribute("books", books);
+        return "books";
+    }
+
+    /*
+     * GET /books/search/admin/author/page
+     * Sirf ADMIN kar sakta hai
+     * Admin Panel — Author name se book search karta hai
+     * Result books.html pe bhejta hai
+     */
+    @GetMapping("/search/admin/author/page")
+    public String searchByAuthorAdminPage(@RequestParam String authorName, Model model) {
+        List<BookDto> books = bookService.searchBookByAuthor(authorName);
+        model.addAttribute("books", books);
+        return "books";
+    }
+
+    /*
+     * POST /books/add
      * Sirf ADMIN use kar sakta hai
-     *
-     * Flow:
-     * 1. Admin Add Book form bharta hai — Book Name, Category, Copies, Author ID
-     * 2. "Add Book" button click karta hai
-     * 3. Ye endpoint call hota hai — book database mein save hoti hai
-     * 4. Page refresh hota hai — nai book Book List mein dikh ti hai
+     * Add Book form se data aata hai
+     * Book database mein save hoti hai
      */
     @PostMapping("/add")
     public String addBook(@ModelAttribute BookDto bookDto, Model model) {
@@ -76,17 +82,9 @@ public class BookViewController {
     }
 
     /*
-     * Thymeleaf UI ke liye Delete Book endpoint
+     * POST /books/delete/{id}
      * Sirf ADMIN use kar sakta hai
-     *
-     * Flow:
-     * 1. Admin Delete button click karta hai
-     * 2. Ye endpoint call hota hai — book database se delete hoti hai
-     * 3. Page refresh hota hai — deleted book Book List se hat jaati hai
-     *
-     * Note:
-     * - Book delete hone ke baad uski ID wapas nahi aati
-     * - Next book add karne pe agle number ki ID milegi
+     * Book ID se delete hoti hai
      */
     @PostMapping("/delete/{id}")
     public String deleteBookPage(@PathVariable Long id) {
@@ -95,15 +93,10 @@ public class BookViewController {
     }
 
     /*
-     * Thymeleaf UI ke liye Update/Edit Book endpoint
+     * POST /books/update/{id}
      * Sirf ADMIN use kar sakta hai
-     *
-     * Flow:
-     * 1. Admin Edit button click karta hai — Modal open hota hai
-     * 2. Book ka purana data Modal form mein prefill hota hai
-     * 3. Admin changes karke "Update Book" click karta hai
-     * 4. Ye endpoint call hota hai — book update hoti hai database mein
-     * 5. Page refresh hota hai — updated data dikh ta hai
+     * Edit modal se updated data aata hai
+     * Book update hoti hai database mein
      */
     @PostMapping("/update/{id}")
     public String updateBook(@PathVariable Long id, @ModelAttribute BookDto bookDto) {

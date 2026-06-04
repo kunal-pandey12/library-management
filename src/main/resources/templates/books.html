@@ -90,7 +90,7 @@
 
             <!-- Search by Book Name — ADMIN -->
             <h6>Search Book by Name</h6>
-            <form th:action="@{/books/search/page}" method="get" class="mb-3">
+            <form th:action="@{/books/search/admin/page}" method="get" class="mb-3">
                 <div class="row">
                     <div class="col-md-9">
                         <input type="text" name="name" class="form-control" placeholder="Enter Book Name">
@@ -103,7 +103,7 @@
 
             <!-- Search by Author Name — ADMIN -->
             <h6>Search Book by Author</h6>
-            <form th:action="@{/books/search/author/page}" method="get" class="mb-3">
+            <form th:action="@{/books/search/admin/author/page}" method="get" class="mb-3">
                 <div class="row">
                     <div class="col-md-9">
                         <input type="text" name="authorName" class="form-control" placeholder="Enter Author Name">
