@@ -60,10 +60,7 @@ A full-stack Library Management System built with **Spring Boot**, **MySQL**, **
 ## 🖼️ Screenshots
 
 ### Admin Dashboard
-> *(Add your dashboard screenshot here)*
-> 
-> To add: Upload screenshot to your repo and replace this line with:
-> `![Dashboard](screenshots/dashboard.png)`
+> ![Dashboard](screenshots/Screenshot__321_.png)
 
 ### Books Management
 > *(Add your books page screenshot here)*
