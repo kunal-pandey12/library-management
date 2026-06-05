@@ -1,95 +1,154 @@
 # 📚 Library Management System
 
-A REST API based Library Management System built with Spring Boot, MySQL, and Spring Security.
+A full-stack Library Management System built with **Spring Boot**, **MySQL**, **Spring Security**, and a responsive **Thymeleaf + Bootstrap UI**.
+
+> 🔐 Role-based access control | 📖 Book & Author Management | 💰 Fine Calculation | 🖥️ Web Dashboard
+
+---
 
 ## 🛠️ Tech Stack
 
-- Java 17
-- Spring Boot 3.2.5
-- Spring Security (Role Based Authentication)
-- Spring Data JPA + Hibernate
-- MySQL Database
-- Lombok
-- Maven
+| Layer | Technology |
+|-------|-----------|
+| Backend | Java 17, Spring Boot 3.2.5 |
+| Security | Spring Security (Role-Based Authentication) |
+| ORM | Spring Data JPA + Hibernate |
+| Database | MySQL |
+| Frontend | Thymeleaf, Bootstrap 5, HTML, CSS |
+| Tools | Maven, Lombok, Postman |
+
+---
 
 ## ✨ Features
 
-- 📖 Book Management (CRUD)
+### 🔐 Security & Auth
+- Role-Based Access Control (**ADMIN / USER**)
+- BCrypt Password Encryption
+- Register / Signup API
+- Role-based Navigation Bar (Admin & User see different views)
+
+### 📖 Library Operations
+- 📚 Book Management (CRUD)
 - ✍️ Author Management (CRUD)
 - 👤 User Management (CRUD)
-- 📋 Issue Book (with availability check & duplicate check)
-- 🔄 Return Book (with fine calculation ₹10/day for late return)
-- 🔍 Book Search Functionality (by Book Name & Author)
-- 🔐 Role Based Security (ADMIN / USER)
-- 🔑 Register / Signup API
-- 🔒 BCrypt Password Encryption
-- ⚠️ Global Exception Handling
+- 📋 Issue Book (with availability check & duplicate issue prevention)
+- 🔄 Return Book (with fine calculation — ₹10/day for late return after 7 days)
+- 🔍 Book Search (by Book Name & Author)
 
-## 👥 Roles
+### 🖥️ UI & Dashboard
+- Responsive Web UI built with Thymeleaf + Bootstrap 5
+- Admin Dashboard with panels for Books, Authors, Users, and Issue management
+- Role-specific views — Admin sees full controls, User sees limited access
+- Clean Navigation Bar with logout support
 
-| Role  | Access |
-|-------|--------|
-| ADMIN | Books, Authors, Users, Issue, Return |
-| USER  | View Books, Issue, Return |
+### ⚠️ Exception Handling
+- Global Exception Handling
+- Duplicate book issue prevention
+- Unauthorized role access blocked
+
+---
+
+## 👥 Roles & Access
+
+| Role | Access |
+|------|--------|
+| **ADMIN** | Books, Authors, Users, Issue, Return, Dashboard |
+| **USER** | View Books, Issue Book, Return Book, Own Dashboard |
+
+---
+
+## 🖼️ Screenshots
+
+### Admin Dashboard
+> *(Add your dashboard screenshot here)*
+> 
+> To add: Upload screenshot to your repo and replace this line with:
+> `![Dashboard](screenshots/dashboard.png)`
+
+### Books Management
+> *(Add your books page screenshot here)*
+
+### Issue Book
+> *(Add your issue book page screenshot here)*
+
+---
+
+## 📡 API Endpoints
+
+### 🔑 Auth
+| Method | URL | Access |
+|--------|-----|--------|
+| POST | `/auth/register` | Public |
+
+### 📚 Books
+| Method | URL | Access |
+|--------|-----|--------|
+| GET | `/books/getAll` | USER + ADMIN |
+| GET | `/books/{id}` | USER + ADMIN |
+| POST | `/books/create` | ADMIN only |
+| PUT | `/books/{id}` | ADMIN only |
+| DELETE | `/books/{id}` | ADMIN only |
+
+### ✍️ Authors
+| Method | URL | Access |
+|--------|-----|--------|
+| GET | `/Author/getAll` | USER + ADMIN |
+| GET | `/Author/{id}` | USER + ADMIN |
+| POST | `/Author/create` | ADMIN only |
+| PUT | `/Author/{id}` | ADMIN only |
+| DELETE | `/Author/{id}` | ADMIN only |
+
+### 📋 Issue & Return
+| Method | URL | Access |
+|--------|-----|--------|
+| POST | `/issue/book` | USER + ADMIN |
+| GET | `/issue/all` | USER + ADMIN |
+| PUT | `/issue/return/{id}` | USER + ADMIN |
+
+---
 
 ## 🚀 How to Run
 
-1. Clone the repo
+### Prerequisites
+- Java 17+
+- MySQL
+- Maven
+
+### Steps
+
+**1. Clone the repository**
 ```bash
 git clone https://github.com/kunal-pandey12/library-management-system.git
+cd library-management-system
 ```
 
-2. MySQL mein database banao
+**2. Create MySQL database**
 ```sql
 CREATE DATABASE library;
 ```
 
-3. `application.properties` mein update karo
+**3. Update `application.properties`**
 ```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/library
 spring.datasource.username=your_username
 spring.datasource.password=your_password
 ```
 
-4. Run karo
+**4. Run the application**
 ```bash
 mvn spring-boot:run
 ```
 
-## 📡 API Endpoints
+**5. Open in browser**
+```
+http://localhost:8084/dashboard
+```
 
-### Auth
-| Method | URL | Access |
-|--------|-----|--------|
-| POST | /auth/register | Public |
+---
 
-### Books
-| Method | URL | Access |
-|--------|-----|--------|
-| GET | /books/getAll | USER + ADMIN |
-| GET | /books/{id} | USER + ADMIN |
-| POST | /books/crate | ADMIN only |
-| PUT | /books/{id} | ADMIN only |
-| DELETE | /books/{id} | ADMIN only |
+## 🔐 How to Test APIs (Postman)
 
-### Authors
-| Method | URL | Access |
-|--------|-----|--------|
-| GET | /Author/getAll | USER + ADMIN |
-| GET | /Author/{id} | USER + ADMIN |
-| POST | /Author/create | ADMIN only |
-| PUT | /Author/{id} | ADMIN only |
-| DELETE | /Author/{id} | ADMIN only |
-
-### Issues
-| Method | URL | Access |
-|--------|-----|--------|
-| POST | /issue/book | USER + ADMIN |
-| GET | /issue/all | USER + ADMIN |
-| PUT | /issue/return/{id} | USER + ADMIN |
-
-## 🔐 How to Test (Postman)
-
-1. Register karo
+**1. Register a user**
 ```json
 POST /auth/register
 {
@@ -100,14 +159,41 @@ POST /auth/register
 }
 ```
 
-2. Postman mein Basic Auth use karo
+**2. Use Basic Auth in Postman**
 ```
 Authorization → Basic Auth
 Username → admin@library.com
 Password → admin123
 ```
 
+---
+
+## 📁 Project Structure
+
+```
+src/main/java/com/csf/library/
+├── Controller/        # REST Controllers
+├── Model/             # Entity classes (Book, Author, User, Issue)
+├── Repo/              # JPA Repositories
+├── Service/           # Business Logic
+├── Security/          # Spring Security Config
+└── Exception/         # Global Exception Handling
+
+src/main/resources/
+├── templates/         # Thymeleaf HTML templates
+└── application.properties
+```
+
+---
+
 ## 👨‍💻 Author
 
 **Kunal Pandey**  
-[GitHub](https://github.com/kunal-pandey12) | [LeetCode](https://leetcode.com/u/pandey_kunal_12/)
+📧 kunalpandey.12dev@gmail.com  
+🔗 [GitHub](https://github.com/kunal-pandey12) | [LinkedIn](https://www.linkedin.com/in/kunal-pandey-2023792a4/) | [LeetCode](https://leetcode.com/u/pandey_kunal_12/)
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
