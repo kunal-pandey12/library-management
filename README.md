@@ -60,13 +60,19 @@ A full-stack Library Management System built with **Spring Boot**, **MySQL**, **
 ## 🖼️ Screenshots
 
 ### Admin Dashboard
-> ![Dashboard](screenshots/Screenshot__321_.png)
+![Dashboard](Screenshot%20(321).png)
 
 ### Books Management
-> *(Add your books page screenshot here)*
+![Books](Screenshot%20(324).png)
 
-### Issue Book
-> *(Add your issue book page screenshot here)*
+### Issue Books
+![Issue](Screenshot%20(327).png)
+
+### Author Management
+![Authors](Screenshot%20(328).png)
+
+### User Management
+![Users](Screenshot%20(329).png)
 
 ---
 
